@@ -445,8 +445,10 @@ mjs_json_parse(struct mjs *mjs, const char *str, size_t len, mjs_val_t *res) {
      * frozen_cb can create new strings, which can result in the reallocation
      * of mjs string mbuf, invalidating the `str` pointer.
      */
-    char *stmp = malloc(len);
+    char *stmp = malloc(len + 1);
     memcpy(stmp, str, len);
+    stmp[len] = '\0';
+
     json_res = json_walk(stmp, len, frozen_cb, ctx);
     free(stmp);
     stmp = NULL;
